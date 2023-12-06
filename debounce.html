@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button class="debounce-btn">click</button>
+    <span class="debounce-cnt">0</span>
+    <button class="debounce-cancel">cancel</button>
+    <script src="./debounce.js"></script>
+    <!-- <script src="./dist/debounce.js"></script> -->
+    <script>
+      const debounceBtn = document.querySelector('.debounce-btn');
+      const debounceCnt = document.querySelector('.debounce-cnt');
+      const debounceCancel = document.querySelector('.debounce-cancel');
+
+      // 원래 함수
+      const fn = (num) =>
+        (debounceCnt.textContent = +debounceCnt.textContent + num);
+
+      // 기본 debounce
+      const debouncer = debounce(fn, 2000);
+      debounceBtn.addEventListener('click', () =>
+        debouncer.debounced(2).then((response) => console.log(response))
+      );
+
+      // immediate 주어졌을 경우 debounce
+      // const debouncerImme = debounce(fn, 2000, true);
+      // debounceBtn.addEventListener('click', () =>
+      //   debouncerImme.debounced(2).then((response) => console.log(response))
+      // );
+
+      // debounce cancel
+      debounceCancel.addEventListener('click', () => debouncer.cancel());
+    </script>
+  </body>
+</html>
