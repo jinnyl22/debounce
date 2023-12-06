@@ -9,10 +9,18 @@ function debounce<T extends unknown[]>(
     new Promise((resolve, reject) => {
       if (immediate) {
         resolve(func(...args));
+        return;
       }
 
       if (timer) clearTimeout(timer);
-      timer = setTimeout(() => resolve(func(...args)), wait);
+      timer = setTimeout(() => {
+        try {
+          const result = func(...args);
+          resolve(result);
+        } catch (error) {
+          reject(error);
+        }
+      }, wait);
     });
 
   const cancel = () => {

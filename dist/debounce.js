@@ -3,10 +3,19 @@ function debounce(func, wait = 1000, immediate = false) {
     const debounced = (...args) => new Promise((resolve, reject) => {
         if (immediate) {
             resolve(func(...args));
+            return;
         }
         if (timer)
             clearTimeout(timer);
-        timer = setTimeout(() => resolve(func(...args)), wait);
+        timer = setTimeout(() => {
+            try {
+                const result = func(...args);
+                resolve(result);
+            }
+            catch (error) {
+                reject(error);
+            }
+        }, wait);
     });
     const cancel = () => {
         clearTimeout(timer);
